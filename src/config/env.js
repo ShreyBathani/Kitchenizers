@@ -8,7 +8,13 @@ import { z } from 'zod';
 const coreEnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().int().positive(),
-  CORS_ORIGINS: z.string().optional()
+  CORS_ORIGINS: z.string().optional(),
+
+  AWS_REGION: z.string().min(1),
+  AWS_ACCESS_KEY_ID: z.string().min(1),
+  AWS_SECRET_ACCESS_KEY: z.string().min(1),
+  AWS_S3_BUCKET: z.string().min(1),
+  AWS_S3_UPLOAD_PREFIX: z.string().default('uploads')
 });
 
 /**
@@ -43,6 +49,13 @@ export const env = {
   // Core
   nodeEnv: parsedCoreEnv.data.NODE_ENV,
   port: parsedCoreEnv.data.PORT,
+  aws: {
+    region: parsedCoreEnv.data.AWS_REGION,
+    accessKeyId: parsedCoreEnv.data.AWS_ACCESS_KEY_ID,
+    secretAccessKey: parsedCoreEnv.data.AWS_SECRET_ACCESS_KEY,
+    bucket: parsedCoreEnv.data.AWS_S3_BUCKET,
+    prefix: parsedCoreEnv.data.AWS_S3_UPLOAD_PREFIX
+  },
   corsOrigins,
   /**
    * Lazy SMTP validation

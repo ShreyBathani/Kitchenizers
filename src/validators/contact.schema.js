@@ -5,6 +5,9 @@ export const contactSchema = z.object({
   email: z.string().email('Invalid email address'),
   phone: z.string().optional(),
   message: z.string().min(10, 'Message must be at least 10 characters'),
-  attachmentUrl: z.string().url().optional(),
+  attachmentUrls: z
+  .array(z.string().url())
+  .optional()
+  .default([]),
   discoveryCall: z.boolean().optional().default(false)
 });
